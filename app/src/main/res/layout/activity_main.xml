@@ -37,6 +37,7 @@
             android:weightSum="2">
 
             <ImageView
+                android:id="@+id/training_intuitve_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
