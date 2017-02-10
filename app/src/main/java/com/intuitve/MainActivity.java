@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView training_intuitve_btn,training_result_btn,live_reading_btn,trading_btn;
+    ImageView training_intuitve_btn, training_result_btn, live_reading_btn, trading_btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // TODO: 09-02-2017 Initialize the widget
-    void init(){
+    void init() {
         training_intuitve_btn = (ImageView) findViewById(R.id.training_intuitve_btn);
         training_intuitve_btn.setOnClickListener(this);
     }
@@ -29,10 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.training_intuitve_btn){
-            Intent intent = new Intent(MainActivity.this,IntuitionTrainingActivity.class);
+        if (v.getId() == R.id.training_intuitve_btn) {
+            Intent intent = new Intent(MainActivity.this, IntuitionTrainingActivity.class);
             startActivity(intent);
         }
 
     }
+
+
 }
+
+
+    //    http://designyourworld.com.au/projects/quizweb/api/user/register/?insecure=cool&username=er&email=er@gmail.com&nonce=4c17315316&display_name=Er&first_name=Er&last_name=Dr&user_pass=12345
