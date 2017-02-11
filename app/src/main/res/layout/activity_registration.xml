@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context="com.intuitve.MainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="8"
+        android:background="@color/background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="15dp"
+            android:weightSum="6">
+
+            <EditText
+                android:id="@+id/register_user_edt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:hint="Enter User Name"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+
+            <EditText
+                android:id="@+id/register_fname_edt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:hint="Enter Display Name"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+
+            <EditText
+                android:id="@+id/register_lname_edt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:hint="Enter Last Name"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+
+
+            <EditText
+                android:id="@+id/register_email_edt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:hint="Enter Email "
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+
+            <EditText
+                android:id="@+id/register_password_edt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:hint="Enter password"
+                android:inputType="textPassword"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
+
+            <Button
+                android:id="@+id/register_submit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:text="Register"
+                android:textColor="@color/background" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_footer" />
+</LinearLayout>
