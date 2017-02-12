@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.intuitve.Model.APIServices;
-import com.intuitve.Model.AppConstant;
+import com.intuitve.Utils.APIServices;
+import com.intuitve.Utils.AppConstant;
 import com.intuitve.Model.Loginmodel;
 
 import java.util.HashMap;
@@ -71,6 +71,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginCall.enqueue(new Callback<Loginmodel>() {
             @Override
             public void onResponse(Call<Loginmodel> call, Response<Loginmodel> response) {
+
+
 
 //                Toast.makeText(MainActivity.this, "--"+response.body().getStatus(), Toast.LENGTH_SHORT).show();
 

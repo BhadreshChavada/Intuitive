@@ -1,4 +1,4 @@
-package com.intuitve.Model;
+package com.intuitve.Utils;
 
 import com.google.gson.Gson;
 
@@ -14,15 +14,10 @@ public class AppConstant {
     public static String BASE_URL = "http://designyourworld.com.au/projects/quizweb/api/";
 
     public static APIServices setupRetrofit(String url) {
-
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
-
-
         APIServices apiServices = retrofit.create(APIServices.class);
         return apiServices;
     }

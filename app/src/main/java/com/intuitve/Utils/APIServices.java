@@ -1,4 +1,8 @@
-package com.intuitve.Model;
+package com.intuitve.Utils;
+
+import com.intuitve.Model.Loginmodel;
+import com.intuitve.Model.Nouncemodel;
+import com.intuitve.Model.Registrationmodel;
 
 import java.util.Map;
 

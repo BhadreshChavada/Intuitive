@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.intuitve.Model.APIServices;
-import com.intuitve.Model.AppConstant;
+import com.intuitve.Utils.APIServices;
+import com.intuitve.Utils.AppConstant;
 import com.intuitve.Model.Nouncemodel;
 import com.intuitve.Model.Registrationmodel;
 
