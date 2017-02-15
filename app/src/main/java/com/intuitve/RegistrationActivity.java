@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.intuitve.Utils.APIServices;
 import com.intuitve.Utils.AppConstant;
@@ -47,13 +48,21 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
         sunbmitbtn.setOnClickListener(this);
 
-        Retrofit_Nounce();
+        if (AppConstant.isNetworkAvailable(RegistrationActivity.this)) {
+            Retrofit_Nounce();
+        } else {
+            Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.register_submit_btn) {
-            Retrofir_Registartion();
+            if (AppConstant.isNetworkAvailable(RegistrationActivity.this)) {
+                Retrofir_Registartion();
+            } else {
+                Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -99,7 +108,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
             public void onResponse(Call<Registrationmodel> call, Response<Registrationmodel> response) {
 
 //                Toast.makeText(MainActivity.this, "--"+response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
+                startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
             }
 
             @Override

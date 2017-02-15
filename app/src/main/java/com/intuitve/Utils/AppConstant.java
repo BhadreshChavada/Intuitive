@@ -1,5 +1,8 @@
 package com.intuitve.Utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+
 import com.google.gson.Gson;
 
 import retrofit2.Retrofit;
@@ -20,5 +23,10 @@ public class AppConstant {
                 .build();
         APIServices apiServices = retrofit.create(APIServices.class);
         return apiServices;
+    }
+
+    public static boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

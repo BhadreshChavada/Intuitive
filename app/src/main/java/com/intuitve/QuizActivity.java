@@ -6,9 +6,15 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.intuitve.Model.QuizModel;
+import com.intuitve.Utils.IntuitveDatabase;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -18,6 +24,9 @@ import java.util.Random;
 public class QuizActivity extends Activity implements View.OnClickListener {
 
     ImageView a, b, c, d;
+    String Activity;
+    ArrayList<QuizModel> arrayList = new ArrayList<>();
+    int i = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,36 +43,109 @@ public class QuizActivity extends Activity implements View.OnClickListener {
         c = (ImageView) findViewById(R.id.c);
         d = (ImageView) findViewById(R.id.d);
 
-        String Activity = getIntent().getStringExtra("Activity");
+        Activity = getIntent().getStringExtra("Activity");
 
+        setImageResource();
+
+    }
+
+    void setImageResource() {
         if (Activity.equals("currencies")) {
-            a.setImageResource(R.drawable.ic_forex_1);
-            b.setImageResource(R.drawable.ic_forex_2);
-            c.setImageResource(R.drawable.ic_forex_3);
-            d.setImageResource(R.drawable.ic_forex_4);
+            if (i <= 31) {
+                a.setImageResource(getResources().getIdentifier("ic_forex_" + i, "drawable", "com.intuitve"));
+                i++;
+                b.setImageResource(getResources().getIdentifier("ic_forex_" + i, "drawable", "com.intuitve"));
+                i++;
+                c.setImageResource(getResources().getIdentifier("ic_forex_" + i, "drawable", "com.intuitve"));
+                i++;
+                d.setImageResource(getResources().getIdentifier("ic_forex_" + i, "drawable", "com.intuitve"));
+                i++;
+            }
 
         } else if (Activity.equals("stocks")) {
 
-            a.setImageResource(R.drawable.ic_stocks1);
-            b.setImageResource(R.drawable.ic_stocks2);
-            c.setImageResource(R.drawable.ic_stocks3);
-            d.setImageResource(R.drawable.ic_stocks4);
+//            a.setImageResource(R.drawable.ic_stocks1);
+//            b.setImageResource(R.drawable.ic_stocks2);
+//            c.setImageResource(R.drawable.ic_stocks3);
+//            d.setImageResource(R.drawable.ic_stocks4);
+
+            if (i <= 55) {
+                a.setImageResource(getResources().getIdentifier("ic_stocks" + i, "drawable", "com.intuitve"));
+                i++;
+                b.setImageResource(getResources().getIdentifier("ic_stocks" + i, "drawable", "com.intuitve"));
+                i++;
+                c.setImageResource(getResources().getIdentifier("ic_stocks" + i, "drawable", "com.intuitve"));
+                i++;
+                d.setImageResource(getResources().getIdentifier("ic_stocks" + i, "drawable", "com.intuitve"));
+                i++;
+            }
 
         } else if (Activity.equals("commodities")) {
 
-            a.setImageResource(R.drawable.ic_commodities_1);
-            b.setImageResource(R.drawable.ic_commodities_2);
-            c.setImageResource(R.drawable.ic_commodities_3);
-            d.setImageResource(R.drawable.ic_commodities_4);
+//            a.setImageResource(R.drawable.ic_commodities_1);
+//            b.setImageResource(R.drawable.ic_commodities_2);
+//            c.setImageResource(R.drawable.ic_commodities_3);
+//            d.setImageResource(R.drawable.ic_commodities_4);
+
+            if (i <= 11) {
+                a.setImageResource(getResources().getIdentifier("ic_commodities_" + i, "drawable", "com.intuitve"));
+                i++;
+                b.setImageResource(getResources().getIdentifier("ic_commodities_" + i, "drawable", "com.intuitve"));
+                i++;
+                c.setImageResource(getResources().getIdentifier("ic_commodities_" + i, "drawable", "com.intuitve"));
+                i++;
+                d.setImageResource(getResources().getIdentifier("ic_commodities_" + i, "drawable", "com.intuitve"));
+                i++;
+            }
 
         } else if (Activity.equals("miscellaneous")) {
 
-            a.setImageResource(R.drawable.ic_miscellaneous_1);
-            b.setImageResource(R.drawable.ic_miscellaneous_2);
-            c.setImageResource(R.drawable.ic_miscellaneous_3);
-            d.setImageResource(R.drawable.ic_miscellaneous_4);
+//            a.setImageResource(R.drawable.ic_miscellaneous_1);
+//            b.setImageResource(R.drawable.ic_miscellaneous_2);
+//            c.setImageResource(R.drawable.ic_miscellaneous_3);
+//            d.setImageResource(R.drawable.ic_miscellaneous_4);
+
+            if (i <= 63) {
+                a.setImageResource(getResources().getIdentifier("ic_miscellaneous_" + i, "drawable", "com.intuitve"));
+                i++;
+                b.setImageResource(getResources().getIdentifier("ic_miscellaneous_" + i, "drawable", "com.intuitve"));
+                i++;
+                c.setImageResource(getResources().getIdentifier("ic_miscellaneous_" + i, "drawable", "com.intuitve"));
+                i++;
+                d.setImageResource(getResources().getIdentifier("ic_miscellaneous_" + i, "drawable", "com.intuitve"));
+                i++;
+            }
 
         }
+
+//        if (Activity.equals("currencies")) {
+//            arrayList = new IntuitveDatabase(QuizActivity.this).GetImage("2");
+//        } else if (Activity.equals("stocks")) {
+//            arrayList = new IntuitveDatabase(QuizActivity.this).GetImage("3");
+//        } else if (Activity.equals("commodities")) {
+//            arrayList = new IntuitveDatabase(QuizActivity.this).GetImage("1");
+//        } else if (Activity.equals("miscellaneous")) {
+//            arrayList = new IntuitveDatabase(QuizActivity.this).GetImage("4");
+//        }
+//
+//        Log.d("Array", "" + arrayList.size());
+////        int id = getResources().getIdentifier("(R.drawable." +arrayList.get(i).getIMAGE1(), null, null);
+//
+////        int id = getResources().getIdentifier(arrayList.get(i).getIMAGE1(),"id",  "com.intuitve");
+////
+////        Log.d("ID1",""+Integer.parseInt("R.drawable."+arrayList.get(i).getIMAGE1()));
+//
+////        int drawableID = getResources().getIdentifier(arrayList.get(i).getIMAGE1(), "drawable", "com.intuitve");
+////        Toast.makeText(QuizActivity.this, arrayList.get(i).getIMAGE1() + " -- " + drawableID, Toast.LENGTH_SHORT).show();
+////        view.setBackgroundResource(drawableID);
+//
+//
+//        Log.d("ID1", "" + R.drawable.ic_miscellaneous_1);
+//        a.setImageResource(getResources().getIdentifier(arrayList.get(i).getIMAGE1(), "drawable", "com.intuitve"));
+//        b.setImageResource(getResources().getIdentifier(arrayList.get(i).getIMAGE2(), "drawable", "com.intuitve"));
+//        c.setImageResource(getResources().getIdentifier(arrayList.get(i).getIMAGE3(), "drawable", "com.intuitve"));
+//        d.setImageResource(getResources().getIdentifier(arrayList.get(i).getIMAGE4(), "drawable", "com.intuitve"));
+
 
         a.setEnabled(false);
         b.setEnabled(false);
@@ -86,7 +168,6 @@ public class QuizActivity extends Activity implements View.OnClickListener {
                 d.setEnabled(true);
             }
         }, 10000);
-
     }
 
     @Override
@@ -138,6 +219,7 @@ public class QuizActivity extends Activity implements View.OnClickListener {
             @Override
             public void run() {
                 dialog.dismiss();
+                setImageResource();
             }
         }, 10000);
 
