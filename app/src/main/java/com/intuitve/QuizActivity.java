@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.intuitve.Model.QuizModel;
@@ -27,6 +29,8 @@ public class QuizActivity extends Activity implements View.OnClickListener {
     String Activity;
     ArrayList<QuizModel> arrayList = new ArrayList<>();
     int i = 1;
+    TextView mTextField;
+    int ClickedButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +47,55 @@ public class QuizActivity extends Activity implements View.OnClickListener {
         c = (ImageView) findViewById(R.id.c);
         d = (ImageView) findViewById(R.id.d);
 
+        mTextField = (TextView) findViewById(R.id.layout_image_counter);
         Activity = getIntent().getStringExtra("Activity");
 
+        setGrayImage();
+
+    }
+
+    void setGrayImage() {
+
+//        a.setImageResource(R.drawable.ic_gray);
+//        b.setImageResource(R.drawable.ic_gray);
+//        c.setImageResource(R.drawable.ic_gray);
+//        d.setImageResource(R.drawable.ic_gray);
+
+        mTextField.setVisibility(View.VISIBLE);
+        a.setEnabled(false);
+        b.setEnabled(false);
+        c.setEnabled(false);
+        d.setEnabled(false);
+
         setImageResource();
+
+
+        new CountDownTimer(10000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                mTextField.setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+//                mTextField.setText("done!");
+                mTextField.setVisibility(View.INVISIBLE);
+                a.setEnabled(true);
+                b.setEnabled(true);
+                c.setEnabled(true);
+                d.setEnabled(true);
+            }
+        }.start();
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+
+            }
+        }, 10000);
+
 
     }
 
@@ -147,39 +197,28 @@ public class QuizActivity extends Activity implements View.OnClickListener {
 //        d.setImageResource(getResources().getIdentifier(arrayList.get(i).getIMAGE4(), "drawable", "com.intuitve"));
 
 
-        a.setEnabled(false);
-        b.setEnabled(false);
-        c.setEnabled(false);
-        d.setEnabled(false);
-
         a.setOnClickListener(this);
         b.setOnClickListener(this);
         c.setOnClickListener(this);
         d.setOnClickListener(this);
 
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                a.setEnabled(true);
-                b.setEnabled(true);
-                c.setEnabled(true);
-                d.setEnabled(true);
-            }
-        }, 10000);
     }
 
     @Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.a) {
+            ClickedButton = 1;
             Random();
         } else if (v.getId() == R.id.b) {
+            ClickedButton = 2;
             Random();
         } else if (v.getId() == R.id.c) {
+            ClickedButton = 3;
             Random();
         } else if (v.getId() == R.id.d) {
+            ClickedButton = 4;
             Random();
         }
 
@@ -212,6 +251,11 @@ public class QuizActivity extends Activity implements View.OnClickListener {
 //            imageView.setImageResource(R.drawable.d);
         }
 
+        if (random == ClickedButton) {
+            Toast.makeText(this, "True", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "False", Toast.LENGTH_SHORT).show();
+        }
         dialog.show();
 
         Handler handler = new Handler();
@@ -219,7 +263,9 @@ public class QuizActivity extends Activity implements View.OnClickListener {
             @Override
             public void run() {
                 dialog.dismiss();
-                setImageResource();
+//                setImageResource();
+
+                setGrayImage();
             }
         }, 10000);
 

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.intuitve.Model.QuizModel;
 import com.intuitve.Utils.APIServices;
 import com.intuitve.Utils.AppConstant;
@@ -20,6 +21,7 @@ import com.intuitve.Utils.SharedPreference;
 import com.intuitve.Utils.Utils;
 import com.intuitve.Utils.Validation;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,10 +38,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     EditText emailedt, passwordedt;
     TextView registertxt;
     Button submitbtn;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         if (new SharedPreference(LoginActivity.this).RetriveValue(Utils.UserName).equals("") || new SharedPreference(LoginActivity.this).RetriveValue(Utils.UserName).equals(null)) {
             setContentView(R.layout.activity_login);
@@ -75,9 +79,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             if (AppConstant.isNetworkAvailable(LoginActivity.this)) {
 
                 if (Validation.isValidEmail(emailedt.getText().toString()) && Validation.isValidPassword(passwordedt.getText().toString()))
-                    Retrofit_Login();
+                {    pd = new ProgressDialog(LoginActivity.this);
+                pd.setMessage("loading");
+                    pd.setCancelable(false);
+                pd.show();
+
+                    Retrofit_Login();}
                 else
-                    Toast.makeText(this, "ENter Email and Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Enter Email and Password", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Please connect to Internet", Toast.LENGTH_SHORT).show();
             }
@@ -96,28 +105,24 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginCall.enqueue(new Callback<Loginmodel>() {
             @Override
             public void onResponse(Call<Loginmodel> call, Response<Loginmodel> response) {
+                pd.dismiss();
 
-//                Log.d("Response", response.body().toString());
+                    if (response.body() instanceof Loginmodel ) {
 
-                Toast.makeText(LoginActivity.this, "" + response.body().getStatus(), Toast.LENGTH_SHORT).show();
+                        if(response.body().getStatus().equals("ok")) {
+                            new SharedPreference(LoginActivity.this).SaveValue(Utils.UserName, response.body().getUser().getUsername());
 
-                if (response.body() != null) {
-                    if (response.body().getStatus().equals("ok")) {
-                        new SharedPreference(LoginActivity.this).SaveValue(Utils.UserName, response.body().getUser().getUsername());
-
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        LoginActivity.this.finish();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            LoginActivity.this.finish();
+                        }
                     } else {
                         Toast.makeText(LoginActivity.this, "Email and password mismatch", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(LoginActivity.this, "Email and password mismatch", Toast.LENGTH_SHORT).show();
                 }
-            }
 
             @Override
             public void onFailure(Call<Loginmodel> call, Throwable t) {
-
+                pd.dismiss();
             }
         });
     }
