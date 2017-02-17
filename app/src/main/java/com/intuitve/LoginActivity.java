@@ -109,7 +109,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                     if (response.body() instanceof Loginmodel ) {
 
-                        if(response.body().getStatus().equals("ok")) {
+                        if(response.body().getStatus().equals("ok") && response.body().getStatus() != null) {
                             new SharedPreference(LoginActivity.this).SaveValue(Utils.UserName, response.body().getUser().getUsername());
 
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
