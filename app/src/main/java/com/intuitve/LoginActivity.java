@@ -1,30 +1,25 @@
 package com.intuitve;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.crashlytics.android.Crashlytics;
-import com.intuitve.Model.QuizModel;
+import com.intuitve.Model.Loginmodel;
 import com.intuitve.Utils.APIServices;
 import com.intuitve.Utils.AppConstant;
-import com.intuitve.Model.Loginmodel;
-import com.intuitve.Utils.IntuitveDatabase;
 import com.intuitve.Utils.SharedPreference;
 import com.intuitve.Utils.Utils;
 import com.intuitve.Utils.Validation;
 
-import io.fabric.sdk.android.Fabric;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +32,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     EditText emailedt, passwordedt;
     TextView registertxt;
-    Button submitbtn;
+    TextView submitbtn;
     ProgressDialog pd;
 
     @Override
@@ -52,8 +47,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             this.finish();
         }
-
-
     }
 
     void init() {
@@ -61,7 +54,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         emailedt = (EditText) findViewById(R.id.login_email_edt);
         passwordedt = (EditText) findViewById(R.id.login_password_edt);
         registertxt = (TextView) findViewById(R.id.login_register_txt);
-        submitbtn = (Button) findViewById(R.id.login_submit_btn);
+        submitbtn = (TextView) findViewById(R.id.login_submit_btn);
+
+
+//        emailedt.getBackground().mutate().setColorFilter(ContextCompat.getColor(this, android.R.color.white), PorterDuff.Mode.SRC_ATOP);
 
         submitbtn.setOnClickListener(this);
         registertxt.setOnClickListener(this);
@@ -78,14 +74,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             if (AppConstant.isNetworkAvailable(LoginActivity.this)) {
 
-                if (Validation.isValidEmail(emailedt.getText().toString()) && Validation.isValidPassword(passwordedt.getText().toString()))
-                {    pd = new ProgressDialog(LoginActivity.this);
-                pd.setMessage("loading");
+                if (Validation.isValidEmail(emailedt.getText().toString()) && Validation.isValidPassword(passwordedt.getText().toString())) {
+                    pd = new ProgressDialog(LoginActivity.this);
+                    pd.setMessage("loading");
                     pd.setCancelable(false);
-                pd.show();
+                    pd.show();
 
-                    Retrofit_Login();}
-                else
+                    Retrofit_Login();
+                } else
                     Toast.makeText(this, "Enter Email and Password", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Please connect to Internet", Toast.LENGTH_SHORT).show();
@@ -107,18 +103,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             public void onResponse(Call<Loginmodel> call, Response<Loginmodel> response) {
                 pd.dismiss();
 
-                    if (response.body() instanceof Loginmodel ) {
+                if (response.body() != null && response.body().getStatus() != null) {
 
-                        if(response.body().getStatus().equals("ok") && response.body().getStatus() != null) {
+                    if (response.body().getStatus().equals("ok")) {
+                        if (response.body().getUser() != null && response.body().getUser().getUsername() != null) {
+
                             new SharedPreference(LoginActivity.this).SaveValue(Utils.UserName, response.body().getUser().getUsername());
-
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             LoginActivity.this.finish();
+
+                        } else {
+
+                            Toast.makeText(LoginActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+
                         }
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Email and password mismatch", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Email and password mismatch", Toast.LENGTH_SHORT).show();
                 }
+            }
 
             @Override
             public void onFailure(Call<Loginmodel> call, Throwable t) {

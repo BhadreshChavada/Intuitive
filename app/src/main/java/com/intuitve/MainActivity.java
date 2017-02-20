@@ -1,15 +1,18 @@
 package com.intuitve;
 
+import com.intuitve.Utils.SharedPreference;
+
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView training_intuitve_btn, training_result_btn, live_reading_btn, trading_btn;
+    TextView logoutTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,22 +26,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // TODO: 09-02-2017 Initialize the widget
     void init() {
         training_intuitve_btn = (ImageView) findViewById(R.id.training_intuitve_btn);
+        logoutTv = (TextView) findViewById(R.id.activity_main_logout);
         training_intuitve_btn.setOnClickListener(this);
+        logoutTv.setOnClickListener(this);
     }
 
     // TODO: 09-02-2017 Set the Click Listener
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.activity_main_logout:
 
-        if (v.getId() == R.id.training_intuitve_btn) {
-            Intent intent = new Intent(MainActivity.this, IntuitionTrainingActivity.class);
-            startActivity(intent);
+                new SharedPreference(MainActivity.this).clearSharedPrefrence();
+                Intent in = new Intent(MainActivity.this, LoginActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(in);
+                finish();
+
+
+                break;
+            case R.id.training_intuitve_btn:
+                Intent intent = new Intent(MainActivity.this, IntuitionTrainingActivity.class);
+                startActivity(intent);
+                break;
         }
-
     }
 
 
 }
 
 
-    //    http://designyourworld.com.au/projects/quizweb/api/user/register/?insecure=cool&username=er&email=er@gmail.com&nonce=4c17315316&display_name=Er&first_name=Er&last_name=Dr&user_pass=12345
+//    http://designyourworld.com.au/projects/quizweb/api/user/register/?insecure=cool&username=er&email=er@gmail.com&nonce=4c17315316&display_name=Er&first_name=Er&last_name=Dr&user_pass=12345

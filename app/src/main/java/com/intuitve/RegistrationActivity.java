@@ -1,6 +1,15 @@
 package com.intuitve;
 
+import com.intuitve.Model.Nouncemodel;
+import com.intuitve.Model.Registrationmodel;
+import com.intuitve.Utils.APIServices;
+import com.intuitve.Utils.AppConstant;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,15 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.intuitve.Utils.APIServices;
-import com.intuitve.Utils.AppConstant;
-import com.intuitve.Model.Nouncemodel;
-import com.intuitve.Model.Registrationmodel;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,9 +27,10 @@ import retrofit2.Response;
 
 public class RegistrationActivity extends Activity implements View.OnClickListener {
 
-    EditText usernameedt, fnameedt, lnameedt, emailedt, passedt;
-    Button sunbmitbtn;
-    String Nounce;
+    public EditText usernameedt, conPwdEdt, mobileNoEdt, emailedt, passedt;
+    public Button sunbmitbtn;
+    public String Nounce;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,8 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
     void init() {
         usernameedt = (EditText) findViewById(R.id.register_user_edt);
-        fnameedt = (EditText) findViewById(R.id.register_fname_edt);
-        lnameedt = (EditText) findViewById(R.id.register_lname_edt);
+        conPwdEdt = (EditText) findViewById(R.id.register_cpwd_edt);
+        mobileNoEdt = (EditText) findViewById(R.id.register_mobile_edt);
         emailedt = (EditText) findViewById(R.id.register_email_edt);
         passedt = (EditText) findViewById(R.id.register_password_edt);
         sunbmitbtn = (Button) findViewById(R.id.register_submit_btn);
@@ -51,7 +52,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         if (AppConstant.isNetworkAvailable(RegistrationActivity.this)) {
             Retrofit_Nounce();
         } else {
-            Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.nointernet), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -59,9 +60,12 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     public void onClick(View v) {
         if (v.getId() == R.id.register_submit_btn) {
             if (AppConstant.isNetworkAvailable(RegistrationActivity.this)) {
-                Retrofir_Registartion();
+                if (conPwdEdt.getText().toString().equals(passedt.getText().toString()))
+                    Retrofir_Registartion();
+                else
+                    Toast.makeText(this, getString(R.string.passwordmismatch), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.nointernet), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -77,7 +81,6 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         nonceCall.enqueue(new Callback<Nouncemodel>() {
             @Override
             public void onResponse(Call<Nouncemodel> call, Response<Nouncemodel> response) {
-//                Toast.makeText(MainActivity.this, "" + response.body().getStatus().toString(), Toast.LENGTH_SHORT).show();
                 Nounce = response.body().getNonce();
             }
 
@@ -89,15 +92,22 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     }
 
     void Retrofir_Registartion() {
+
+        pd = new ProgressDialog(RegistrationActivity.this);
+        pd.setMessage("loading");
+        pd.setCancelable(false);
+        pd.show();
+
+
         Map<String, String> RegistrationMap = new HashMap<>();
         RegistrationMap.put("insecure", "cool");
         RegistrationMap.put("username", usernameedt.getText().toString());
         RegistrationMap.put("email", emailedt.getText().toString());
         RegistrationMap.put("nonce", Nounce);
-        RegistrationMap.put("display_name", fnameedt.getText().toString());
-        RegistrationMap.put("first_name", fnameedt.getText().toString());
-        RegistrationMap.put("last_name", lnameedt.getText().toString());
         RegistrationMap.put("user_pass", passedt.getText().toString());
+        RegistrationMap.put("display_name", usernameedt.getText().toString());
+        RegistrationMap.put("mobile", mobileNoEdt.getText().toString());
+//        RegistrationMap.put("last_name", mobileNoEdt.getText().toString());
 
 
         APIServices registrationservice = AppConstant.setupRetrofit(AppConstant.BASE_URL);
@@ -107,8 +117,19 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
             @Override
             public void onResponse(Call<Registrationmodel> call, Response<Registrationmodel> response) {
 
-//                Toast.makeText(MainActivity.this, "--"+response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                pd.dismiss();
+
+                if (response.body() != null)
+                    if (response.body().getStatus() != null)
+                        if (response.body().getStatus().equalsIgnoreCase("ok")) {
+                            startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                        } else {
+                            Toast.makeText(RegistrationActivity.this, getString(R.string.somethingwentwrong), Toast.LENGTH_SHORT).show();
+                        }
+                    else
+                        Toast.makeText(RegistrationActivity.this, getString(R.string.somethingwentwrong), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(RegistrationActivity.this, getString(R.string.somethingwentwrong), Toast.LENGTH_SHORT).show();
             }
 
             @Override

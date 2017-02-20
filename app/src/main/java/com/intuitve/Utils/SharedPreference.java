@@ -30,4 +30,8 @@ public class SharedPreference {
         return sharedPref.getString(Key, "");
     }
 
+    public void clearSharedPrefrence() {
+        sharedPref.edit().clear().commit();
+    }
+
 }
