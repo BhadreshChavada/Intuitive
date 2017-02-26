@@ -3,6 +3,7 @@ package com.intuitve.Utils;
 import com.intuitve.Model.Loginmodel;
 import com.intuitve.Model.Nouncemodel;
 import com.intuitve.Model.Registrationmodel;
+import com.intuitve.Model.UsercheckModel;
 
 import java.util.Map;
 
@@ -30,4 +31,7 @@ public interface APIServices {
     Call<Loginmodel> LoginService(
             @QueryMap(encoded = true) Map<String, String> webservice
     );
+
+    @GET("webapi/checkusername.php?")
+    Call<UsercheckModel> UserCheckervice(@QueryMap(encoded = true) Map<String, String> webservice);
 }

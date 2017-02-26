@@ -34,6 +34,17 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/_16sdp"/>
 
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="31dp"
+            android:layout_marginStart="31dp"
+            android:layout_toEndOf="@+id/imageView3"
+            android:layout_toRightOf="@+id/imageView3"
+            android:textSize="@dimen/_18sdp" />
+
     </RelativeLayout>
 
     <LinearLayout

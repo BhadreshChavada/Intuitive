@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.intuitve.Model.QuizModel;
+import com.intuitve.Model.QuizResult;
 import com.intuitve.Utils.IntuitveDatabase;
 
 import java.util.ArrayList;
@@ -29,8 +31,10 @@ public class QuizActivity extends Activity implements View.OnClickListener {
     String Activity;
     ArrayList<QuizModel> arrayList = new ArrayList<>();
     int i = 1;
-    TextView mTextField;
+    TextView mTextField, headertxt;
     int ClickedButton;
+
+    ArrayList<QuizResult> quizResult = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +51,21 @@ public class QuizActivity extends Activity implements View.OnClickListener {
         c = (ImageView) findViewById(R.id.c);
         d = (ImageView) findViewById(R.id.d);
 
+        headertxt = (TextView) findViewById(R.id.header);
+
         mTextField = (TextView) findViewById(R.id.layout_image_counter);
         Activity = getIntent().getStringExtra("Activity");
 
+        if (Activity.equals("currencies")) {
+            headertxt.setText("Forex and Commodities");
+        } else if (Activity.equals("stocks")) {
+            headertxt.setText("Stock and Indices");
+        } else if (Activity.equals("commodities")) {
+            headertxt.setText("Forex and Commodities");
+            headertxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        } else if (Activity.equals("miscellaneous")) {
+            headertxt.setText("Miscellaneous");
+        }
         setGrayImage();
 
     }
@@ -110,6 +126,11 @@ public class QuizActivity extends Activity implements View.OnClickListener {
                 i++;
                 d.setImageResource(getResources().getIdentifier("ic_forex_" + i, "drawable", "com.intuitve"));
                 i++;
+            } else {
+                for (int i = 0; i < quizResult.size(); i++) {
+                    Toast.makeText(QuizActivity.this, quizResult.get(i).getSelectedPos() + "--" + quizResult.get(i).getRandomPos() + "--" + quizResult.get(i).isResult(), Toast.LENGTH_SHORT).show();
+                }
+                onBackPressed();
             }
 
         } else if (Activity.equals("stocks")) {
@@ -128,6 +149,11 @@ public class QuizActivity extends Activity implements View.OnClickListener {
                 i++;
                 d.setImageResource(getResources().getIdentifier("ic_stocks" + i, "drawable", "com.intuitve"));
                 i++;
+            }else{
+                for (int i = 0; i < quizResult.size(); i++) {
+                    Toast.makeText(QuizActivity.this, quizResult.get(i).getSelectedPos() + "--" + quizResult.get(i).getRandomPos() + "--" + quizResult.get(i).isResult(), Toast.LENGTH_SHORT).show();
+                }
+                onBackPressed();
             }
 
         } else if (Activity.equals("commodities")) {
@@ -147,6 +173,12 @@ public class QuizActivity extends Activity implements View.OnClickListener {
                 d.setImageResource(getResources().getIdentifier("ic_commodities_" + i, "drawable", "com.intuitve"));
                 i++;
             }
+            else{
+                for (int i = 0; i < quizResult.size(); i++) {
+                    Toast.makeText(QuizActivity.this, quizResult.get(i).getSelectedPos() + "--" + quizResult.get(i).getRandomPos() + "--" + quizResult.get(i).isResult(), Toast.LENGTH_SHORT).show();
+                }
+                onBackPressed();
+            }
 
         } else if (Activity.equals("miscellaneous")) {
 
@@ -164,6 +196,11 @@ public class QuizActivity extends Activity implements View.OnClickListener {
                 i++;
                 d.setImageResource(getResources().getIdentifier("ic_miscellaneous_" + i, "drawable", "com.intuitve"));
                 i++;
+            }else{
+                for (int i = 0; i < quizResult.size(); i++) {
+                    Toast.makeText(QuizActivity.this, quizResult.get(i).getSelectedPos() + "--" + quizResult.get(i).getRandomPos() + "--" + quizResult.get(i).isResult(), Toast.LENGTH_SHORT).show();
+                }
+                onBackPressed();
             }
 
         }
@@ -251,11 +288,20 @@ public class QuizActivity extends Activity implements View.OnClickListener {
 //            imageView.setImageResource(R.drawable.d);
         }
 
+        QuizResult quizResultmodel = new QuizResult();
+        quizResultmodel.setSelectedPos(ClickedButton);
+        quizResultmodel.setRandomPos(random);
+
         if (random == ClickedButton) {
-            Toast.makeText(this, "True", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "True", Toast.LENGTH_SHORT).show();
+            quizResultmodel.setResult(true);
         } else {
-            Toast.makeText(this, "False", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "False", Toast.LENGTH_SHORT).show();
+            quizResultmodel.setResult(false);
         }
+
+        quizResult.add(quizResultmodel);
+
         dialog.show();
 
         Handler handler = new Handler();

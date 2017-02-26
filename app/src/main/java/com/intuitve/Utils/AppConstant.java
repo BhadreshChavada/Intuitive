@@ -16,6 +16,8 @@ public class AppConstant {
 
     public static String BASE_URL = "http://designyourworld.com.au/projects/quizweb/api/";
 
+    public static String BASE_URL_USERCHECK = "http://designyourworld.com.au/projects/quizweb/";
+
     public static APIServices setupRetrofit(String url) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)

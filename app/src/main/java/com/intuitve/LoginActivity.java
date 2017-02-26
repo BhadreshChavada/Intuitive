@@ -81,6 +81,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     pd.show();
 
                     Retrofit_Login();
+
+//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                    LoginActivity.this.finish();
                 } else
                     Toast.makeText(this, "Enter Email and Password", Toast.LENGTH_SHORT).show();
             } else {

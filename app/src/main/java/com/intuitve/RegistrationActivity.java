@@ -2,8 +2,10 @@ package com.intuitve;
 
 import com.intuitve.Model.Nouncemodel;
 import com.intuitve.Model.Registrationmodel;
+import com.intuitve.Model.UsercheckModel;
 import com.intuitve.Utils.APIServices;
 import com.intuitve.Utils.AppConstant;
+import com.intuitve.Utils.Validation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,6 +34,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     public Button sunbmitbtn;
     public String Nounce;
     private ProgressDialog pd;
+    boolean validuser = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         passedt = (EditText) findViewById(R.id.register_password_edt);
         sunbmitbtn = (Button) findViewById(R.id.register_submit_btn);
 
+        sunbmitbtn.setEnabled(false);
         sunbmitbtn.setOnClickListener(this);
 
         if (AppConstant.isNetworkAvailable(RegistrationActivity.this)) {
@@ -54,6 +59,48 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         } else {
             Toast.makeText(this, getString(R.string.nointernet), Toast.LENGTH_SHORT).show();
         }
+
+        emailedt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    if (usernameedt.getText().length() > 0) {
+                        CheckUserName();
+                    }
+                }
+            }
+        });
+
+        passedt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (Validation.isValidEmail(emailedt.getText().toString())) {
+                        emailedt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email, 0, R.drawable.ic_check, 0);
+                    } else {
+                        emailedt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email, 0, 0, 0);
+                    }
+                }
+            }
+        });
+
+        mobileNoEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+
+                    if (passedt.getText().length() > 0) {
+                        if (passedt.getText().toString().equals(conPwdEdt.getText().toString())) {
+                            conPwdEdt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check, 0);
+                        } else {
+                            conPwdEdt.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -61,7 +108,11 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         if (v.getId() == R.id.register_submit_btn) {
             if (AppConstant.isNetworkAvailable(RegistrationActivity.this)) {
                 if (conPwdEdt.getText().toString().equals(passedt.getText().toString()))
-                    Retrofir_Registartion();
+
+                    if (validuser) {
+                        Retrofir_Registartion();
+                    } else
+                        Toast.makeText(this, "Please choose valid UserName", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(this, getString(R.string.passwordmismatch), Toast.LENGTH_SHORT).show();
             } else {
@@ -86,6 +137,33 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
             @Override
             public void onFailure(Call<Nouncemodel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    void CheckUserName() {
+        Map<String, String> UserCheck = new HashMap<>();
+        UserCheck.put("username", usernameedt.getText().toString());
+
+        APIServices userCheckservice = AppConstant.setupRetrofit(AppConstant.BASE_URL_USERCHECK);
+        Call<UsercheckModel> UserCheckCall = userCheckservice.UserCheckervice(UserCheck);
+
+        UserCheckCall.enqueue(new Callback<UsercheckModel>() {
+            @Override
+            public void onResponse(Call<UsercheckModel> call, Response<UsercheckModel> response) {
+                if (response.body().getAvailable().equals("true")) {
+                    sunbmitbtn.setEnabled(true);
+                    validuser = true;
+                    usernameedt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_user, 0, R.drawable.ic_check, 0);
+                } else {
+                    usernameedt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_user, 0, 0, 0);
+                    sunbmitbtn.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UsercheckModel> call, Throwable t) {
 
             }
         });
