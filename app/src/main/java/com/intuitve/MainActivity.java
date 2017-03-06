@@ -13,11 +13,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView training_intuitve_btn, training_result_btn, live_reading_btn, trading_btn;
     TextView logoutTv;
+    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Intent intent = getIntent();
+
+
+        address = intent.getStringExtra(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+
 
         // TODO: 09-02-2017 Call the Initialize method
         init();
@@ -46,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.training_intuitve_btn:
+
                 Intent intent = new Intent(MainActivity.this, IntuitionTrainingActivity.class);
+                intent.putExtra(DeviceListActivity.EXTRA_DEVICE_ADDRESS, address);
                 startActivity(intent);
                 break;
         }

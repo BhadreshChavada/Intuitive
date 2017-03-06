@@ -6,50 +6,50 @@ package com.intuitve.Model;
 
 public class QuizResult {
 
-    double GSR2, GSR5, GAR10, GSR12, GSR15;
+    String GSR2, GSR5, GAR10, GSR12, GSR15;
     int selectedPos, RandomPos;
     boolean result;
 
     public QuizResult() {
     }
 
-    public double getGSR2() {
+    public String getGSR2() {
         return GSR2;
     }
 
-    public void setGSR2(double GSR2) {
+    public void setGSR2(String GSR2) {
         this.GSR2 = GSR2;
     }
 
-    public double getGSR5() {
+    public String getGSR5() {
         return GSR5;
     }
 
-    public void setGSR5(double GSR5) {
+    public void setGSR5(String GSR5) {
         this.GSR5 = GSR5;
     }
 
-    public double getGAR10() {
+    public String getGAR10() {
         return GAR10;
     }
 
-    public void setGAR10(double GAR10) {
+    public void setGAR10(String GAR10) {
         this.GAR10 = GAR10;
     }
 
-    public double getGSR12() {
+    public String getGSR12() {
         return GSR12;
     }
 
-    public void setGSR12(double GSR12) {
+    public void setGSR12(String GSR12) {
         this.GSR12 = GSR12;
     }
 
-    public double getGSR15() {
+    public String getGSR15() {
         return GSR15;
     }
 
-    public void setGSR15(double GSR15) {
+    public void setGSR15(String GSR15) {
         this.GSR15 = GSR15;
     }
 
